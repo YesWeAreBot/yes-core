@@ -4,6 +4,40 @@
 
 yes-core 是一个用 Go 语言编写的、极度纯粹的微内核。它的设计灵感来源于 Linux 内核的模块化思想与 Koishi 的插件机制。
 
+## 架构图
+
+graph TD
+    subgraph 业务层
+        A[业务插件 A: 群管]
+        B[业务插件 B: AI 对话]
+        C[业务插件 C: 自定义渲染器]
+    end
+
+    subgraph 抽象与调度层
+        D[adapter-manager]
+    end
+
+    subgraph 协议适配层
+        E[adapter-onebot]
+        F[adapter-telegram...]
+    end
+
+    subgraph 微内核层
+        G[yes-core]
+    end
+
+    A -. 依赖 .-> D
+    B -. 依赖 .-> D
+    C -. 重载渲染器 .-> D
+
+    D -->|转换/分发事件| A
+    D -->|调用接口| E
+
+    E -->|WebSocket/HTTP| H(QQ/NapCat)
+    G -->|管理生命周期| D
+    G -->|管理生命周期| E
+
+
 ## 快速开始
 
 ### 1. 编写一个插件
