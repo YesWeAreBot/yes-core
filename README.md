@@ -59,7 +59,7 @@ package main
 import (
     "github.com/yeswearebot/yes-core/core"
 
-    _ "github.com/yeswearebot/yes-core/plugins/adapter-manager"
+    _ "github.com/yeswearebot/yes-core/plugins/adapter-manager" // 这些都是举例
     _ "github.com/yeswearebot/yes-core/plugins/onebot-adapter"
     _ "github.com/yeswearebot/yes-core/plugins/yesimbot-go"
     _ "github.com/yourname/my-plugin"
@@ -73,3 +73,4 @@ func main() {
 }
 ```
 
+然后运行你的 `main.go`，启动你的系统！
