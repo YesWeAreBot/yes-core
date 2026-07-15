@@ -30,19 +30,28 @@ func (p *MyPlugin) Name() string { return “my-plugin” }
 func (p *MyPlugin) DependsOn() []string { return []string{"adapter-manager"} }
 
 func (p *MyPlugin) Init(ctx *core.SystemContext) error {
-    // 订阅事件
-    ctx.Events.Subscribe("message", func(payload any) {
-        fmt.Println(“收到消息:”, payload)
+    // 1. 订阅事件
+    ctx.Events.Subscribe("greet", func(payload any) {
+      fmt.Printf("[MyPlugin] 收到问候: %s\n", payload)
     })
     return nil
 }
 
 func (p *MyPlugin) Start(ctx *core.SystemContext) error {
-    // 获取其他插件实例并调用
-    if rawManager, ok := ctx.Registry.Get("adapter-manager"); ok {
+    // 2. 获取其他插件实例并调用 (强耦合同步调用)
+    if rawManager, ok := ctx.Registry.Get(“adapter-manager”); ok {
         // manager := rawManager.(*manager.AdapterManager)
         // manager.SendMessage(…)
+        _ = rawManager
     }
+
+    // 3. 发布事件 (弱耦合异步广播)
+    go func() {
+        time.Sleep(1 * time.Second)
+        fmt.Println("[MyPlugin] 正在广播问候事件...")
+        ctx.Events.Publish("greet", "Hello from MyPlugin!")
+    }()
+
     return nil
 }
 
