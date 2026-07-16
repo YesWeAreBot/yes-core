@@ -4,6 +4,8 @@
 
 yes-core 是一个用 Go 语言编写的、极度纯粹的微内核。它的设计灵感来源于 Linux 内核的模块化思想与 Koishi 的插件机制。
 
+[查看详细的 Wiki](https://github.com/YesWeAreBot/yes-core/wiki)
+
 ## 架构图
 
 ```mermaid
